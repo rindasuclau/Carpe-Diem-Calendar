@@ -1,0 +1,56 @@
+.header {
+    display: flex;
+    height: 4rem;
+    align-items: center;
+}
+
+.header h1 {
+    margin-left: 0.5rem;
+    margin-right: 3rem;
+    font-size: larger;
+}
+
+.logo {
+    height: 3rem;
+    width: 3rem;
+    margin-left: 3rem;
+}
+
+.icon-wrapper {
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 50%;
+    margin: 0 0.5rem;
+    display: flex;
+    padding: 0.25rem;
+    cursor: pointer;
+}
+
+.icon-wrapper:hover {
+    background-color: rgb(246, 246, 246);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+    background-color: transparent;
+}
+
+.today {
+    border-radius: 5px;
+    padding: 0.5rem 1.2rem;
+    margin-right: 2.5rem;
+    background-color: white;
+    border: 1px solid gray;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.today:hover {
+    background-color: rgba(204, 204, 204, 0.404);
+    /* box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); */
+}
+
+.month {
+    margin-left: 0.5rem;
+    font-weight: bold;
+}

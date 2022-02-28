@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import getMonth from "./utils/utils";
 
 /* Layout Components */
@@ -12,18 +12,26 @@ import Day from "./components/Day";
 import Week from "./components/Week";
 import Month from "./components/Month";
 import Sidebar from "./components/Sidebar";
+import {  useSelector } from "react-redux";
 
 function App() {
-  console.table(getMonth());
+  const [currentMonth, setCurrentMonth] = useState(getMonth());
+  const { monthIndex } = useSelector((state) => state.calendar);
+
+
+  useEffect(() => {
+    setCurrentMonth(getMonth(monthIndex));
+  }, [monthIndex]);
+
   return (
     <Layout>
       <Header />
       <Main>
-        <Sidebar />
+        {/* <Sidebar /> */}
         <Calendar>
-          {<Day />}
-          {<Week />}
-          {<Month />}
+          {null && <Day />}
+          {null && <Week />}
+          {<Month month={currentMonth} />}
         </Calendar>
       </Main>
     </Layout>
