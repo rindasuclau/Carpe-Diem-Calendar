@@ -1,0 +1,207 @@
+.modal {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.form {
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  width: 30%;
+  background-color: white;
+}
+.header {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+    display: flex;
+    justify-content: end;
+}
+
+.close {
+  border-width: 0;
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0.3rem;
+}
+
+.close:hover {
+    background-color: inherit;
+}
+
+.wrapper {
+  padding: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 0.2rem;
+}
+
+.title,
+.description {
+  grid-row: 1;
+  grid-column: 7/2;
+  padding-top: 0.4rem;
+  border-width: 0;
+  outline: none;
+  font-size: large;
+  font-weight: bold;
+  padding-left: 0.5rem;
+  border-bottom: 1px solid gray;
+}
+
+.title:focus,
+.description:focus {
+  transition: 150ms linear;
+  border-bottom: 2px solid dodgerblue;
+}
+
+.description {
+  grid-row: 3/5;
+  grid-column: 7/2;
+  overflow: auto;
+  font-size: medium;
+  color: rgba(0, 0, 0, 0.7);
+  background-color: rgb(0, 0, 0, 0.05);
+}
+
+.schedule,
+.segment,
+.bookmark {
+  grid-row: 2;
+  grid-column: 1;
+  align-self: center;
+  text-align: center;
+  opacity: 0.5;
+}
+
+.segment {
+  grid-row: 3;
+}
+
+.bookmark {
+  grid-row: 5;
+}
+
+.dropdown-container {
+  grid-row: 2;
+  grid-column: 5/6;
+  align-self: center;
+  display: flex;
+  align-items: center;
+}
+
+.time-dropdown {
+    border-width: 0;
+    outline: none;
+    appearance: none;
+    text-align: center;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+}
+
+.time-dropdown:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+
+.time-dropdown:focus {
+    background-color: white;
+    border-radius: 8px;
+}
+
+
+.btn-add-time {
+  grid-row: 2;
+  grid-column: 7/6;
+  height: 50%;
+  align-self: center;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: x-small;
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+
+.btn-close-add-time {
+    grid-row: 2;
+    grid-column: 6;
+    align-self: center;
+    background-color: transparent;
+    border-width: 0;
+    display: flex;
+    justify-content: end;
+}
+
+.btn-close-add-time span {
+   font-size: medium;
+   cursor: pointer;
+}
+
+.btn-add-time:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.event-date {
+  text-align: left;
+  grid-row: 2;
+  grid-column: 2/5;
+}
+
+.labels {
+    grid-row: 5;
+    grid-column: 2/7;
+    display: flex;
+    align-items: center;
+}
+
+.label {
+    border-radius: 50%;
+    margin-left: 0.1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    opacity: 0.8;
+    color: white;
+}
+
+.label:hover {
+    opacity: 1;
+}
+
+.label-text {
+    font-size: small;
+    margin-left: 1rem;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.save {
+    grid-row: 6;
+    grid-column: 6;
+    height: 2.5rem;
+    padding: 0.5rem 0.5rem;
+    background-color: rgb(3, 127, 250);
+    color: white;
+    font-weight: bold;
+    border: 1px solid rgb(3, 127, 250);;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.save:hover {
+   background-color: dodgerblue;
+}

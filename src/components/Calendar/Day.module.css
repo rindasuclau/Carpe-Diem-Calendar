@@ -1,0 +1,54 @@
+.day {
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    max-width: 15rem;
+    width: 15rem;
+    max-height: 12rem;
+    overflow: hidden;
+}
+
+.day-short, .day-short--name {
+    font-size: small;
+    text-align: center;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+}
+
+.day-short {
+    padding: 0.2rem 0.5rem;
+}
+
+.current-day {
+    background-color: dodgerblue;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-area {
+    flex: 1;
+    height: 100%;
+}
+
+.event {
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+    color: white;
+    font-size: small;
+    text-align: left;
+    font-weight: bold;
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.event:hover {
+    opacity: 0.8;
+}

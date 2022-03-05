@@ -1,0 +1,11 @@
+.container {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 15rem;
+    min-width: 10rem;
+    max-width: 20rem;
+    overflow: auto;
+}
+
+.wrapper {
+    margin: 1rem 1rem;
+}

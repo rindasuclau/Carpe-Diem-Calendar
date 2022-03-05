@@ -10,25 +10,15 @@
     font-size: larger;
 }
 
+.month-title {
+    font-size: larger;
+    font-weight: bold;
+}
+
 .logo {
     height: 3rem;
     width: 3rem;
     margin-left: 3rem;
-}
-
-.icon-wrapper {
-    background-color: transparent;
-    border: 1px solid white;
-    border-radius: 50%;
-    margin: 0 0.5rem;
-    display: flex;
-    padding: 0.25rem;
-    cursor: pointer;
-}
-
-.icon-wrapper:hover {
-    background-color: rgb(246, 246, 246);
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .icon {
@@ -46,7 +36,7 @@
 }
 
 .today:hover {
-    background-color: rgba(204, 204, 204, 0.404);
+    background-color: rgba(204, 204, 204, 0.304);
     /* box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); */
 }
 

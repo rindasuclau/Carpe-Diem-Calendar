@@ -1,0 +1,45 @@
+.container {
+  margin-top: 1rem;
+}
+
+.month-title {
+  font-size: medium;
+  font-weight: bold;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  align-items: center;
+}
+
+.day-letter {
+  font-size: small;
+  font-weight: bold;
+  justify-self: center;
+}
+
+.day {
+  padding: 0.3rem 0;
+  background-color: white;
+  border-width: 0;
+  cursor: pointer;
+}
+
+.current-day, .selected-day {
+  background-color: dodgerblue;
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.selected-day {
+    background-color: rgba(9, 100, 238, 0.2);
+    transition: 200ms linear;
+}
+
+.selected-day:hover {
+    background-color: rgba(9, 100, 238, 0.4);
+    
+}

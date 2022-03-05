@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import getMonth from "./utils/utils";
 
 /* Layout Components */
@@ -8,33 +8,38 @@ import Layout from "./components/Layout/Layout";
 import Main from "./components/Layout/Main";
 
 /* View Components */
-import Day from "./components/Day";
-import Week from "./components/Week";
-import Month from "./components/Month";
-import Sidebar from "./components/Sidebar";
-import {  useSelector } from "react-redux";
+import Day from "./components/Calendar/Day";
+import Week from "./components/Calendar/Week";
+import Month from "./components/Calendar/Month";
+import Sidebar from "./components/Calendar/Sidebar";
+import { useSelector } from "react-redux";
+import EventModal from "./components/UI/EventModal";
 
 function App() {
   const [currentMonth, setCurrentMonth] = useState(getMonth());
   const { monthIndex } = useSelector((state) => state.calendar);
 
+  const showEventModal = useSelector(state => state.calendar.showEventModal);
 
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
   }, [monthIndex]);
 
   return (
-    <Layout>
-      <Header />
-      <Main>
-        {/* <Sidebar /> */}
-        <Calendar>
-          {null && <Day />}
-          {null && <Week />}
-          {<Month month={currentMonth} />}
-        </Calendar>
-      </Main>
-    </Layout>
+    <Fragment>
+      {showEventModal && <EventModal />}
+      <Layout>
+        <Header />
+        <Main>
+          <Sidebar month={currentMonth} />
+          <Calendar>
+            {null && <Day />}
+            {null && <Week />}
+            {<Month month={currentMonth} />}
+          </Calendar>
+        </Main>
+      </Layout>
+    </Fragment>
   );
 }
 
