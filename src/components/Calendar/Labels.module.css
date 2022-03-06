@@ -1,0 +1,11 @@
+.label {
+  align-items: center;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.title {
+    font-size: small;
+    font-weight: bold;
+}
+

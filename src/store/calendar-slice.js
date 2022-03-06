@@ -1,13 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
 
-
 const calendarState = {
-    monthIndex: dayjs().month(),
-    selectedDay: null,
-    selectedEvent: null,
-    showEventModal: false,
-    events: []
+  monthIndex: dayjs().month(),
+  selectedDay: dayjs().format("YYYY-MM-DD"),
+  selectedEvent: null,
+  showEventModal: false,
+  weekIndex: 0,
+  viewMode: "Month",
+  labels: [],
+  events: [],
+  filteredEvents: []
 };
 
 const calendarSlice = createSlice({
@@ -15,26 +18,41 @@ const calendarSlice = createSlice({
   initialState: calendarState,
   reducers: {
     setMonthIndex(state, newIndex) {
-        state.monthIndex = newIndex.payload;
+      state.monthIndex = newIndex.payload;
+      state.weekIndex = 0;
     },
     increment(state) {
-        state.monthIndex++;
+      state.monthIndex++;
     },
     decrement(state) {
-        state.monthIndex--;
+      state.monthIndex--;
+    },
+    incrementWeek(state) {
+      if(state.weekIndex <= 3) {
+        state.weekIndex++;
+      } else {
+        state.weekIndex = 0;
+        ++state.monthIndex;
+      }
+    },
+    decrementWeek(state) {
+      if(state.weekIndex >= 1) {
+        state.weekIndex--;
+      } else {
+        state.weekIndex = 4;
+        --state.monthIndex;
+      }
     },
 
     setSelectedDay(state, day) {
-        state.selectedDay = day.payload;
+      state.selectedDay = day.payload;
     },
     setShowEventModal(state, value) {
-       state.showEventModal = value.payload;
+      state.showEventModal = value.payload;
     },
 
     loadEvents(state, events) {
-      events.forEach(event => {
-        state.events.push(event);
-      })
+      state.events = events.payload.slice();
     },
 
     addEvent(state, event) {
@@ -42,18 +60,44 @@ const calendarSlice = createSlice({
       console.log(event.payload);
     },
     removeEvent(state, eventId) {
-      state.events = state.events.filter(event => event.id !== eventId.payload)
+      state.events = state.events.filter(
+        (event) => event.id !== eventId.payload
+      );
       state.selectedEvent = null;
       state.showEventModal = false;
     },
     updateEvent(state, event) {
       const newEvent = event.payload;
-      state.events = state.events.map(ev => ev.id === newEvent.id ? newEvent : ev);
+      state.events = state.events.map((ev) =>
+        ev.id === newEvent.id ? newEvent : ev
+      );
     },
     setSelectedEvent(state, event) {
       state.selectedEvent = event.payload;
+    },
+    setLabels(state) {
+      state.labels = [...new Set(state.events.map((event) => event.color))].map(
+        (color) => {
+          const currentLabel = state.labels.find((lbl) => lbl.color === color);
+          return {
+            color,
+            checked: currentLabel ? currentLabel.checked : true,
+          };
+        }
+      );
+    },
+    updateLabel(state, label) {
+      state.labels = state.labels.map((lb) => {
+        return label.payload.color === lb.color ? label.payload : lb;
+      });
+    },
+    setFilteredEvents(state, newEvents) {
+      state.filteredEvents = newEvents.payload ? newEvents.payload.slice() : [];
+    },
+    setViewMode(state, mode) {
+      state.viewMode = mode.payload;
+      state.weekIndex = 0;
     }
-
   },
 });
 

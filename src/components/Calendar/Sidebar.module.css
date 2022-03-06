@@ -1,11 +1,14 @@
 .container {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    width: 15rem;
-    min-width: 10rem;
+    min-width: 20rem;
+    width: 100%;
     max-width: 20rem;
     overflow: auto;
+    display: flex;
+    justify-content: center;
 }
 
 .wrapper {
-    margin: 1rem 1rem;
+   margin-top: 2rem;
+   padding: 1rem;
+   width: 100%;
 }

@@ -41,6 +41,7 @@ const Modal = () => {
   };
 
   const closeHandler = () => {
+    dispatch(calendarActions.setSelectedEvent(null));
     dispatch(calendarActions.setShowEventModal(false));
   };
 
@@ -99,6 +100,7 @@ const Modal = () => {
       );
     }
     dispatch(calendarActions.setShowEventModal(false));
+    dispatch(calendarActions.setSelectedEvent(null));
   };
 
   return (
@@ -108,7 +110,7 @@ const Modal = () => {
           <span className="material-icons">drag_handle</span>
           <div className={classes.actions}>
             <button type="button" className={classes.close} onClick={deleteHandler}>
-              <span className="material-icons">delete</span>
+              <span className="material-icons">delete_outline</span>
             </button>
             <button type="button" className={classes.close} onClick={closeHandler}>
               <span className="material-icons">close</span>

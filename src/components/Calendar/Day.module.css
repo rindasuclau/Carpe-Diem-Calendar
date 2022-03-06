@@ -1,21 +1,24 @@
 .day {
     text-align: center;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, .06);
     max-width: 15rem;
-    width: 15rem;
-    max-height: 12rem;
+    width: 100%;
+    min-height: 12rem;
+    max-height: 15rem;
     overflow: hidden;
+    flex: 1 1 0%;
 }
 
 .day-short, .day-short--name {
-    font-size: small;
+    font-size: x-small;
     text-align: center;
+    font-weight: bolder;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
 }
 
 .day-short {
-    padding: 0.2rem 0.5rem;
+    padding: 0.3rem 0.4rem;
 }
 
 .current-day {

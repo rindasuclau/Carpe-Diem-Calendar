@@ -7,7 +7,7 @@ import classes from "./Day.module.css";
 const Day = ({ day, idx }) => {
   const [dayEvents, setDayEvents] = useState([]);
   const dispatch = useDispatch();
-  const events = useSelector((state) => state.calendar.events);
+  const events = useSelector((state) => state.calendar.filteredEvents);
   
   useEffect(() => {
     const newEvents = events.filter(

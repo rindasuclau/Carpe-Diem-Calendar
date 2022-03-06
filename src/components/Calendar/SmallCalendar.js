@@ -47,7 +47,7 @@ const SmallCalendar = (props) => {
   };
 
   const dayHandler = (day) => {
-    dispatch(calendarActions.setMonthIndex(day.month()));
+    dispatch(calendarActions.setMonthIndex(currentMonthIndex));
     dispatch(calendarActions.setSelectedDay(day.format("YYYY-MM-DD")));
   };
 

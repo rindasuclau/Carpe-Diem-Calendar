@@ -1,5 +1,6 @@
 .container {
   margin-top: 1rem;
+  box-sizing: border-box;
 }
 
 .month-title {
@@ -16,15 +17,21 @@
 
 .day-letter {
   font-size: small;
-  font-weight: bold;
+  font-weight: bolder;
   justify-self: center;
 }
 
 .day {
-  padding: 0.3rem 0;
+  margin: 0.5rem 0.3rem;
+  padding: 0.4rem 0.1rem;
   background-color: white;
   border-width: 0;
   cursor: pointer;
+}
+
+.day span {
+  font-size: smaller;
+  font-weight: bold;
 }
 
 .current-day, .selected-day {
