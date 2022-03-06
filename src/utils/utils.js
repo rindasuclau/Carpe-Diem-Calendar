@@ -23,8 +23,8 @@ export const eventsArray = [
   {
     title: "Ukraina support day",
     description: "A beautiful day of peace",
-    startTime: "12:00am",
-    endTime: "1:00am",
+    startTime: "12:00 AM",
+    endTime: "1:00 AM",
     date: "2022-03-09",
     color: "dodgerblue",
     id: Date.now() + 1
@@ -32,8 +32,8 @@ export const eventsArray = [
   {
     title: "Epstein didn't kill himself.",
     description: "A beautiful day of peace",
-    startTime: "12:00am",
-    endTime: "1:00am",
+    startTime: "12:00 AM",
+    endTime: "1:00 AM",
     date: "2022-04-09",
     color: "green",
     id: Date.now() + 2
@@ -55,21 +55,16 @@ const getMonth = (month = dayjs().month()) => {
   return daysMatrix;
 };
 
-export const getWeekTimeMatrix = () => {
+export const getTimeGrid = () => {
   let time = 1;
-
-  const timeMatrix = new Array(7).fill(null).map(() => {
-    time = 1;
-    return new Array(24).fill("").map(() => {
+  const matrix =  new Array(24).fill(null).map(() => {
       if (time <= 12) {
-        return time++ + " AM";
+        return time++ + ":00 AM";
       } else {
-        return time++ - 12 + " PM";
+        return time++ - 12 + ":00 PM";
       }
     });
-  });
-
-  return timeMatrix;
+  return matrix;
 };
 
 const calculateRemainingTime = (expirationTime) => {

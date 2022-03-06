@@ -8,65 +8,78 @@
   grid-template-rows: repeat(3, 1fr);
 }
 
-.day-short, .day-short-name {
-    text-align: center;
-    font-size: large;
-    font-weight: bold;
-    align-self: center;
+.day-short,
+.day-short-name {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  align-self: center;
 }
 
 .day-short-name {
-    font-size: small;
-    color: rgba(0,0,0,0.6);
+  font-size: small;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .btn-day-short {
-    margin: 0.5rem 0;
-    width: 2rem;
-    height: 2rem;
-    justify-self: center;
-    border-width: 0;
-    background-color: transparent;
+  margin: 0.5rem 0;
+  width: 2rem;
+  height: 2rem;
+  justify-self: center;
+  border-width: 0;
+  border-radius: 50%;
+  background-color: transparent;
 }
 
-.today, .selected-day {
-    background-color: dodgerblue;
-    border-radius: 50%;
-    color: white;
-    font-weight: bold;
-    transition: 200ms linear;
+.btn-day-short:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.today,
+.selected-day {
+  background-color: dodgerblue;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  transition: 200ms linear;
 }
 .time {
-    text-align: end;
-    font-size: x-small;
-    margin-right: 2rem;
-    padding: 1rem 0;
+  text-align: end;
+  font-size: x-small;
+  margin-right: 2rem;
+  padding: 1rem 0;
 }
 
-.event {
-    text-overflow: ellipsis;
-    width: 100%;
-    height: 1.5rem;
-    overflow: hidden;
-    color: white;
-    font-size: small;
-    text-align: left;
-    font-weight: bold;
-    padding: 0.2rem 0.5rem;
-    border-radius: 8px;
-    cursor: pointer;
+.event,
+.event-full {
+  text-overflow: ellipsis;
+  width: 100%;
+  height: 1.5rem;
+  overflow: hidden;
+  color: white;
+  font-size: small;
+  text-align: left;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-.event:hover {
-    opacity: 0.8;
+.event-full {
+  height: 100%;
+}
+
+.event:hover,
+.event-full:hover {
+  opacity: 0.9;
 }
 
 .event-container {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .content {
-    display: flex;
+  display: flex;
 }
 
 .time-grid {
@@ -76,16 +89,16 @@
 }
 
 .column {
-    width: 100%;
-    height: 3rem;
-    /* height: ; */
-    border: 1px solid rgba(0, 0, 0, 0.05);
+  width: 100%;
+  height: 3rem;
+  /* height: ; */
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .selected-day {
-    background-color: rgba(9, 100, 238, 0.2);
+  background-color: rgba(9, 100, 238, 0.2);
 }
 
 .selected-day:hover {
-    background-color: rgba(9, 100, 238, 0.4);
+  background-color: rgba(9, 100, 238, 0.4);
 }

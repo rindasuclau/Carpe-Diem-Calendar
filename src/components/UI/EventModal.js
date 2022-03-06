@@ -5,23 +5,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { calendarActions } from "../../store/redux";
 import Dropdown from "./Dropdown";
 import classes from "./EventModal.module.css";
-import { labelColors, times } from "../../utils/utils";
+import { getTimeGrid, labelColors } from "../../utils/utils";
 
 const Modal = () => {
   const selectedEvent = useSelector((state) => state.calendar.selectedEvent);
+  const newEventStartTime = useSelector((state) => state.calendar.startTime);
 
   const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
   const [description, setDescription] = useState(
     selectedEvent ? selectedEvent.description : ""
   );
   const [startTime, setStartTime] = useState(
-    selectedEvent ? selectedEvent.startTime : ""
+    selectedEvent
+      ? selectedEvent.startTime
+      : newEventStartTime
+      ? newEventStartTime
+      : ""
   );
+ 
   const [endTime, setEndTime] = useState(
-    selectedEvent ? selectedEvent.endTime : ""
+    selectedEvent
+      ? selectedEvent.endTime
+      : newEventStartTime
+      ? newEventStartTime
+      : ""
   );
   const [addTime, setAddTime] = useState(
-    selectedEvent && selectedEvent.startTime ? true : false
+    (selectedEvent && selectedEvent.startTime) || newEventStartTime
+      ? true
+      : false
   );
   const [selectedLabel, setSelectedLabel] = useState(
     selectedEvent ? selectedEvent.color : "tomato"
@@ -43,11 +55,12 @@ const Modal = () => {
   const closeHandler = () => {
     dispatch(calendarActions.setSelectedEvent(null));
     dispatch(calendarActions.setShowEventModal(false));
+    dispatch(calendarActions.setStartTime(null));
   };
 
   const addTimeHandler = (value) => {
     if (value) {
-      setStartTime(times[0]);
+      setStartTime(newEventStartTime ? newEventStartTime : getTimeGrid()[0]);
     } else {
       setStartTime(null);
     }
@@ -67,10 +80,10 @@ const Modal = () => {
   };
 
   const deleteHandler = () => {
-      if(selectedEvent) {
-        dispatch(calendarActions.removeEvent(selectedEvent.id));
-      }
-  }
+    if (selectedEvent) {
+      dispatch(calendarActions.removeEvent(selectedEvent.id));
+    }
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -101,6 +114,7 @@ const Modal = () => {
     }
     dispatch(calendarActions.setShowEventModal(false));
     dispatch(calendarActions.setSelectedEvent(null));
+    dispatch(calendarActions.setStartTime(null));
   };
 
   return (
@@ -109,10 +123,18 @@ const Modal = () => {
         <header className={classes.header}>
           <span className="material-icons">drag_handle</span>
           <div className={classes.actions}>
-            <button type="button" className={classes.close} onClick={deleteHandler}>
+            <button
+              type="button"
+              className={classes.close}
+              onClick={deleteHandler}
+            >
               <span className="material-icons">delete_outline</span>
             </button>
-            <button type="button" className={classes.close} onClick={closeHandler}>
+            <button
+              type="button"
+              className={classes.close}
+              onClick={closeHandler}
+            >
               <span className="material-icons">close</span>
             </button>
           </div>
@@ -171,13 +193,15 @@ const Modal = () => {
                 <Dropdown
                   className={classes["time-dropdown"]}
                   onChange={startTimeHandler}
-                  options={times}
+                  options={getTimeGrid()}
+                  value={newEventStartTime ? newEventStartTime : getTimeGrid()[0]} //Fix this
                 />
                 -
                 <Dropdown
                   className={classes["time-dropdown"]}
                   onChange={endTimeHandler}
-                  options={times}
+                  options={getTimeGrid()}
+                  value={newEventStartTime ? newEventStartTime : getTimeGrid()[0]}
                 />
               </div>
             )}

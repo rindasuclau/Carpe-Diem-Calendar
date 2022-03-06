@@ -6,11 +6,12 @@ const calendarState = {
   selectedDay: dayjs().format("YYYY-MM-DD"),
   selectedEvent: null,
   showEventModal: false,
+  startTime: null,
   weekIndex: 0,
   viewMode: "Month",
   labels: [],
   events: [],
-  filteredEvents: []
+  filteredEvents: [],
 };
 
 const calendarSlice = createSlice({
@@ -28,7 +29,7 @@ const calendarSlice = createSlice({
       state.monthIndex--;
     },
     incrementWeek(state) {
-      if(state.weekIndex <= 3) {
+      if (state.weekIndex <= 3) {
         state.weekIndex++;
       } else {
         state.weekIndex = 0;
@@ -36,7 +37,7 @@ const calendarSlice = createSlice({
       }
     },
     decrementWeek(state) {
-      if(state.weekIndex >= 1) {
+      if (state.weekIndex >= 1) {
         state.weekIndex--;
       } else {
         state.weekIndex = 4;
@@ -57,7 +58,6 @@ const calendarSlice = createSlice({
 
     addEvent(state, event) {
       state.events.push(event.payload);
-      console.log(event.payload);
     },
     removeEvent(state, eventId) {
       state.events = state.events.filter(
@@ -74,6 +74,9 @@ const calendarSlice = createSlice({
     },
     setSelectedEvent(state, event) {
       state.selectedEvent = event.payload;
+    },
+    setStartTime(state, time) {
+      state.startTime = time.payload;
     },
     setLabels(state) {
       state.labels = [...new Set(state.events.map((event) => event.color))].map(
@@ -97,7 +100,7 @@ const calendarSlice = createSlice({
     setViewMode(state, mode) {
       state.viewMode = mode.payload;
       state.weekIndex = 0;
-    }
+    },
   },
 });
 

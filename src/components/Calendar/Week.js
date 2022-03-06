@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { calendarActions } from "../../store/redux";
-import getMonth, { getWeekTimeMatrix } from "../../utils/utils";
+import getMonth, { getTimeGrid, getWeekTimeMatrix } from "../../utils/utils";
 import classes from "./Week.module.css";
 
 const Week = ({ month }) => {
@@ -53,7 +53,17 @@ const Week = ({ month }) => {
     const newEvents = events.filter(
       (event) =>
         dayjs(new Date(event.date)).format("YYYY-MM-DD") ===
-        day.format("YYYY-MM-DD")
+        day.format("YYYY-MM-DD") && !event.startTime
+    );
+
+    return newEvents;
+  };
+
+  const getEventsArrayForDayAndTime = (day, time) => {
+    const newEvents = events.filter(
+      (event) =>
+        dayjs(new Date(event.date)).format("YYYY-MM-DD") ===
+          day.format("YYYY-MM-DD") && event.startTime === time
     );
 
     return newEvents;
@@ -61,7 +71,13 @@ const Week = ({ month }) => {
 
   const updateEventHandler = (event) => {
     dispatch(calendarActions.setSelectedEvent(event));
-    dispatch(calendarActions.setSelectedDay(event.date))
+    dispatch(calendarActions.setSelectedDay(event.date));
+    dispatch(calendarActions.setShowEventModal(true));
+  };
+
+  const createEventHandler = (day, time) => {
+    dispatch(calendarActions.setSelectedDay(day.format("YYYY-MM-DD")));
+    dispatch(calendarActions.setStartTime(time));
     dispatch(calendarActions.setShowEventModal(true));
   };
 
@@ -103,7 +119,7 @@ const Week = ({ month }) => {
                   {getEventsArrayForDay(day).map((ev, i) => {
                     return (
                       <div
-                        key={idx}
+                        key={i}
                         onClick={() => {
                           updateEventHandler(ev);
                         }}
@@ -126,9 +142,10 @@ const Week = ({ month }) => {
           })}
         </div>
         <div className={classes["time-grid"]}>
-          {getWeekTimeMatrix()[0].map((time, i) => {
+          {getTimeGrid().map((time, i) => {
             return (
               <span
+                key={i}
                 className={classes.time}
                 style={{ gridRow: i + 1, gridColumn: 1 }}
               >
@@ -136,16 +153,38 @@ const Week = ({ month }) => {
               </span>
             );
           })}
-          {getWeekTimeMatrix().map((day, i) => {
+          {currentWeek.map((day, i) => {
             return (
               <React.Fragment key={i}>
-                {day.map((t, idx) => {
+                {getTimeGrid().map((time, idx) => {
                   return (
                     <div
                       className={classes.column}
                       style={{ gridRow: idx + 1, gridColumn: i + 2 }}
                       key={idx}
+                      onClick={() => {
+                        createEventHandler(day, time);
+                      }}
                     >
+                      {getEventsArrayForDayAndTime(day, time).map((ev, i) => {
+                        return (
+                          <div
+                            key={i}
+                            onClick={() => {
+                              updateEventHandler(ev);
+                            }}
+                            className={classes["event-full"]}
+                            style={{
+                              backgroundColor: ev.color ? ev.color : "black",
+                              gridColumn: i + 1,
+                            }}
+                          >
+                            {`${ev.startTime ? ev.startTime : ""} ${
+                              ev.title ? ev.title : "(No Title)"
+                            }`}
+                          </div>
+                        );
+                      })}
                     </div>
                   );
                 })}
