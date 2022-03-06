@@ -10,17 +10,27 @@ import Layout from "../components/Layout/Layout";
 import Main from "../components/Layout/Main";
 import dayjs from "dayjs";
 import { calendarActions } from "../store/redux";
+import { loadEventsHandler, updateEventsOnServer } from "../store/calendar-actions";
+
+let firstLoad = true;
 
 const Home = () => {
   const dispatch = useDispatch();
   const [currentMonth, setCurrentMonth] = useState(getMonth());
   const { monthIndex } = useSelector((state) => state.calendar);
+  const events = useSelector(state => state.calendar.events);
 
   const viewMode = useSelector(state => state.calendar.viewMode);
 
   useEffect(() => {
-    dispatch(calendarActions.loadEvents(eventsArray));
-  }, [])
+    if (firstLoad) {
+      dispatch(loadEventsHandler());
+    }
+    firstLoad = false;
+    return (() => {
+      // dispatch(updateEventsOnServer(events));
+    })
+  }, [dispatch])
 
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));

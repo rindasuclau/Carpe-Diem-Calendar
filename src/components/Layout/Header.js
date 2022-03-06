@@ -7,6 +7,7 @@ import CalendarHeader from "../UI/CalendarHeader";
 import Dropdown from "../UI/Dropdown";
 import { useHistory } from "react-router-dom";
 import { authActions } from "../../store/auth-slice";
+import { manageTokenSorage } from "../../utils/utils";
 
 const displayOptions = ["Month", "Week"];
 
@@ -50,6 +51,7 @@ const Header = () => {
   const authHandler = () => {
     if (isLoggedIn) {
       dispatch(authActions.logout());
+      manageTokenSorage();
     } else {
       history.push("/login");
     }

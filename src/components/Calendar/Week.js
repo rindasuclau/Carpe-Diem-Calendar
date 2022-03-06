@@ -76,8 +76,10 @@ const Week = ({ month }) => {
   };
 
   const createEventHandler = (day, time) => {
+    if (time) {
+      dispatch(calendarActions.setStartTime(time));
+    }
     dispatch(calendarActions.setSelectedDay(day.format("YYYY-MM-DD")));
-    dispatch(calendarActions.setStartTime(time));
     dispatch(calendarActions.setShowEventModal(true));
   };
 
@@ -101,6 +103,9 @@ const Week = ({ month }) => {
               <React.Fragment key={idx}>
                 <button
                   style={{ gridColumn: idx + 2 }}
+                  onClick={() => {
+                    createEventHandler(day);
+                  }}
                   className={` ${
                     classes["btn-day-short"]
                   } ${getSelectedDayClasses(day)}`}

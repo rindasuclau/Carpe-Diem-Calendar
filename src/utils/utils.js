@@ -10,35 +10,6 @@ export const labelColors = [
   "orange",
 ];
 export const FIREBASE_API_KEY = "AIzaSyCCFW-It40BBdJbcH8GjTHi9NaEnAcPCTw";
-export const eventsArray = [
-  {
-    title: "Peace day",
-    description: "A beautiful day of peace",
-    startTime: null,
-    endTime: null,
-    date: "2022-03-22",
-    color: "plum",
-    id: Date.now()
-  },
-  {
-    title: "Ukraina support day",
-    description: "A beautiful day of peace",
-    startTime: "12:00 AM",
-    endTime: "1:00 AM",
-    date: "2022-03-09",
-    color: "dodgerblue",
-    id: Date.now() + 1
-  },
-  {
-    title: "Epstein didn't kill himself.",
-    description: "A beautiful day of peace",
-    startTime: "12:00 AM",
-    endTime: "1:00 AM",
-    date: "2022-04-09",
-    color: "green",
-    id: Date.now() + 2
-  },
-];
 
 const getMonth = (month = dayjs().month()) => {
   const year = dayjs().year();
@@ -57,14 +28,25 @@ const getMonth = (month = dayjs().month()) => {
 
 export const getTimeGrid = () => {
   let time = 1;
-  const matrix =  new Array(24).fill(null).map(() => {
-      if (time <= 12) {
-        return time++ + ":00 AM";
-      } else {
-        return time++ - 12 + ":00 PM";
-      }
-    });
+  const matrix = new Array(24).fill(null).map(() => {
+    if (time <= 12) {
+      return time++ + ":00 AM";
+    } else {
+      return time++ - 12 + ":00 PM";
+    }
+  });
   return matrix;
+};
+
+export const manageTokenSorage = (token, expiresIn) => {
+  if (token && expiresIn) {
+    const expirationTime = calculateRemainingTime(expiresIn);
+    localStorage.setItem("token", token);
+    localStorage.setItem("expirationTime", expirationTime);
+  } else {
+    localStorage.removeItem("token");
+    localStorage.removeItem("expirationTime");
+  }
 };
 
 const calculateRemainingTime = (expirationTime) => {
@@ -76,13 +58,11 @@ const calculateRemainingTime = (expirationTime) => {
   return remainingDuration;
 };
 
-const retrieveStoredToken = () => {
+export const retrieveStoredToken = () => {
   const storedToken = localStorage.getItem("token");
-  const storedExpirationDate = localStorage.getItem("expirationTime");
+  const storedExpirationTime = localStorage.getItem("expirationTime");
 
-  const remainingTime = calculateRemainingTime(storedExpirationDate);
-
-  if (remainingTime <= 3600) {
+  if (storedExpirationTime <= 3600) {
     localStorage.removeItem("token");
     localStorage.removeItem("expirationTime");
     return null;
@@ -90,7 +70,7 @@ const retrieveStoredToken = () => {
 
   return {
     token: storedToken,
-    duration: remainingTime,
+    duration: storedExpirationTime,
   };
 };
 

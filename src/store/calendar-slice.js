@@ -53,10 +53,15 @@ const calendarSlice = createSlice({
     },
 
     loadEvents(state, events) {
-      state.events = events.payload.slice();
+      for (let key in events.payload) {
+        const newEvent = events.payload[key];
+        newEvent.key = key;
+        state.events.push(newEvent)
+      }
     },
 
     addEvent(state, event) {
+      console.log(event.payload);
       state.events.push(event.payload);
     },
     removeEvent(state, eventId) {

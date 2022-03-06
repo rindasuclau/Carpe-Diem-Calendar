@@ -6,6 +6,7 @@ import { calendarActions } from "../../store/redux";
 import Dropdown from "./Dropdown";
 import classes from "./EventModal.module.css";
 import { getTimeGrid, labelColors } from "../../utils/utils";
+import { createEventHandler, deleteEventHandler, updateEventHandler } from "../../store/calendar-actions";
 
 const Modal = () => {
   const selectedEvent = useSelector((state) => state.calendar.selectedEvent);
@@ -60,7 +61,11 @@ const Modal = () => {
 
   const addTimeHandler = (value) => {
     if (value) {
-      setStartTime(newEventStartTime ? newEventStartTime : getTimeGrid()[0]);
+      if (selectedEvent && selectedEvent.startTime) {
+        setStartTime(selectedEvent.startTime)
+      } else {
+        setStartTime(newEventStartTime ? newEventStartTime : getTimeGrid()[0]);
+      }
     } else {
       setStartTime(null);
     }
@@ -81,27 +86,26 @@ const Modal = () => {
 
   const deleteHandler = () => {
     if (selectedEvent) {
-      dispatch(calendarActions.removeEvent(selectedEvent.id));
+      dispatch(deleteEventHandler(selectedEvent));
     }
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
     if (selectedEvent) {
-      dispatch(
-        calendarActions.updateEvent({
+      dispatch(updateEventHandler({
           title,
           description,
           startTime,
           endTime,
           date: selectedDay,
           color: selectedLabel,
+          key: selectedEvent.key,
           id: selectedEvent.id,
         })
       );
     } else {
-      dispatch(
-        calendarActions.addEvent({
+      dispatch(createEventHandler({
           title,
           description,
           startTime,

@@ -28,7 +28,7 @@ const AuthForm = () => {
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
 
-    // optional: Add validation
+    // Add validation
 
     setIsLoading(true);
     if (isLoggedIn) {

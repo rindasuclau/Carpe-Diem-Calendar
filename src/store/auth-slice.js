@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const authState = { isLoggedIn: false, token: "" };
+const authState = { isLoggedIn: false, token: "", expiresIn: 0 };
 
 const authSlice = createSlice({
   name: "auth",
@@ -12,6 +12,12 @@ const authSlice = createSlice({
     logout(state) {
       state.isLoggedIn = false;
     },
+    setToken(state, token) {
+      state.token = token.payload;
+    },
+    setExpireTime(state, time) {
+      state.expiresIn = +time.payload;
+    }
   },
 });
 
