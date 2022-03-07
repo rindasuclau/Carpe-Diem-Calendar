@@ -6,8 +6,6 @@ import { calendarActions } from "../../store/redux";
 import CalendarHeader from "../UI/CalendarHeader";
 import Dropdown from "../UI/Dropdown";
 import { useHistory } from "react-router-dom";
-import { authActions } from "../../store/auth-slice";
-import { manageTokenSorage } from "../../utils/utils";
 
 const displayOptions = ["Month", "Week"];
 
@@ -17,10 +15,9 @@ const Header = () => {
   const history = useHistory();
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const viewMode = useSelector(state => state.calendar.viewMode);
+  const viewMode = useSelector((state) => state.calendar.viewMode);
 
   const monthView = viewMode === "Month" ? true : false;
-
 
   const resetHandler = () => {
     const currIndex = dayjs().month() + Math.random(); // Update it even if it didn't change.
@@ -46,16 +43,18 @@ const Header = () => {
 
   const viewModeHandler = (mode) => {
     dispatch(calendarActions.setViewMode(mode));
-  }
+  };
 
   const authHandler = () => {
     if (isLoggedIn) {
-      dispatch(authActions.logout());
-      manageTokenSorage();
+      localStorage.removeItem("token");
+      localStorage.removeItem("expirationTime");
+      dispatch(calendarActions.setShowEventModal(false));
+      history.go(0);
     } else {
       history.push("/login");
     }
-  }
+  };
 
   return (
     <header className={classes.header}>

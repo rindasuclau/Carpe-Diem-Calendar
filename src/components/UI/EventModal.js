@@ -6,11 +6,17 @@ import { calendarActions } from "../../store/redux";
 import Dropdown from "./Dropdown";
 import classes from "./EventModal.module.css";
 import { getTimeGrid, labelColors } from "../../utils/utils";
-import { createEventHandler, deleteEventHandler, updateEventHandler } from "../../store/calendar-actions";
+import {
+  createEventHandler,
+  deleteEventHandler,
+  updateEventHandler,
+} from "../../store/calendar-actions";
 
 const Modal = () => {
   const selectedEvent = useSelector((state) => state.calendar.selectedEvent);
   const newEventStartTime = useSelector((state) => state.calendar.startTime);
+
+  const token = useSelector((state) => state.auth.token);
 
   const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
   const [description, setDescription] = useState(
@@ -23,7 +29,7 @@ const Modal = () => {
       ? newEventStartTime
       : ""
   );
- 
+
   const [endTime, setEndTime] = useState(
     selectedEvent
       ? selectedEvent.endTime
@@ -62,7 +68,8 @@ const Modal = () => {
   const addTimeHandler = (value) => {
     if (value) {
       if (selectedEvent && selectedEvent.startTime) {
-        setStartTime(selectedEvent.startTime)
+        setStartTime(selectedEvent.startTime);
+        setEndTime(selectedEvent.endTime);
       } else {
         setStartTime(newEventStartTime ? newEventStartTime : getTimeGrid()[0]);
       }
@@ -86,34 +93,42 @@ const Modal = () => {
 
   const deleteHandler = () => {
     if (selectedEvent) {
-      dispatch(deleteEventHandler(selectedEvent));
+      dispatch(deleteEventHandler(selectedEvent, token));
     }
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
     if (selectedEvent) {
-      dispatch(updateEventHandler({
-          title,
-          description,
-          startTime,
-          endTime,
-          date: selectedDay,
-          color: selectedLabel,
-          key: selectedEvent.key,
-          id: selectedEvent.id,
-        })
+      dispatch(
+        updateEventHandler(
+          {
+            title,
+            description,
+            startTime,
+            endTime,
+            date: selectedDay,
+            color: selectedLabel,
+            key: selectedEvent.key,
+            id: selectedEvent.id,
+          },
+          token
+        )
       );
     } else {
-      dispatch(createEventHandler({
-          title,
-          description,
-          startTime,
-          endTime,
-          date: selectedDay,
-          color: selectedLabel,
-          id: Date.now(),
-        })
+      dispatch(
+        createEventHandler(
+          {
+            title,
+            description,
+            startTime,
+            endTime,
+            date: selectedDay,
+            color: selectedLabel,
+            id: Date.now(),
+          },
+          token
+        )
       );
     }
     dispatch(calendarActions.setShowEventModal(false));
@@ -198,34 +213,36 @@ const Modal = () => {
                   className={classes["time-dropdown"]}
                   onChange={startTimeHandler}
                   options={getTimeGrid()}
-                  value={newEventStartTime ? newEventStartTime : getTimeGrid()[0]} //Fix this
+                  value={startTime} //Fix this
                 />
                 -
                 <Dropdown
                   className={classes["time-dropdown"]}
                   onChange={endTimeHandler}
                   options={getTimeGrid()}
-                  value={newEventStartTime ? newEventStartTime : getTimeGrid()[0]}
+                  value={endTime}
                 />
               </div>
             )}
             <div className={classes.labels}>
               {labelColors.map((lblColor, idx) => {
                 return (
-                  <span
-                    key={idx}
-                    className={`${classes.label} material-icons`}
-                    style={{ backgroundColor: lblColor }}
-                    onClick={() => {
-                      labelHandler(lblColor);
-                    }}
-                  >
-                    {selectedLabel === lblColor && "check"}
-                  </span>
+                  lblColor !== "green" && (
+                    <span
+                      key={idx}
+                      className={`${classes.label} material-icons`}
+                      style={{ backgroundColor: lblColor }}
+                      onClick={() => {
+                        labelHandler(lblColor);
+                      }}
+                    >
+                      {selectedLabel === lblColor && "check"}
+                    </span>
+                  )
                 );
               })}
               <span className={classes["label-text"]}>
-                (Select event color)
+                (Select an event type)
               </span>
             </div>
             <button className={classes.save}>Save</button>

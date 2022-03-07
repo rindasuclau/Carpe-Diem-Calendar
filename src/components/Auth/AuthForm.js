@@ -1,4 +1,4 @@
-import { useState, useRef} from "react";
+import { useState, useRef, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { authenticate } from "../../store/auth-actions";
@@ -41,13 +41,13 @@ const AuthForm = () => {
           isLogin,
         })
       );
+      setIsLoading(false);
       history.push("/");
     }
-    setIsLoading(false);
   };
 
   const cancelHandler = () => {
-    history.goBack();
+    history.push("/");
   };
 
   return (

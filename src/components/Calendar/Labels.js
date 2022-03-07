@@ -34,13 +34,31 @@ const Labels = () => {
       <p className={classes.title}>My Calendars</p>
       {labels.map(({ color, checked }, idx) => {
         return (
-          <label key={idx} className={classes.label}>
-            <Checkbox
-              checked={checked}
-              color={color}
-              onChange={updateLabelHandler}
-            />
-          </label>
+          color !== "green" && (
+            <label key={idx} className={classes.label}>
+              <Checkbox
+                checked={checked}
+                color={color}
+                onChange={updateLabelHandler}
+              />
+            </label>
+          )
+        );
+      })}
+      {labels.map(({ color, checked }, idx) => {
+        return (
+          color === "green" && (
+            <div key={idx} className={classes.national}>
+              <p className={classes.title}>Other Calendars</p>
+              <label className={classes.label}>
+                <Checkbox
+                  checked={checked}
+                  color={color}
+                  onChange={updateLabelHandler}
+                />
+              </label>
+            </div>
+          )
         );
       })}
     </React.Fragment>

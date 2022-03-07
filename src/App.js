@@ -6,36 +6,38 @@ import Login from "./Pages/Login";
 import Home from "./Pages/Home";
 import { Route } from "react-router-dom";
 import { retrieveStoredToken } from "./utils/utils";
-import { authActions } from "./store/auth-slice";
+import { authHandler } from "./store/auth-actions";
+import { loadEventsHandler } from "./store/calendar-actions";
 
-let timer = null;
+// let logoutTimer = null;
 
 function App() {
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   const showEventModal = useSelector((state) => state.calendar.showEventModal);
+  const tokenData = retrieveStoredToken();
 
   useEffect(() => {
-    const storedData = retrieveStoredToken();
-    const expirationTime = storedData ? storedData.duration : null;
-    console.log(storedData)
-    const token = storedData ? storedData.token : null;
-    if(storedData) {
-      dispatch(authActions.login());
-      dispatch(authActions.setToken(token))
-      timer = setTimeout(() => {
-        dispatch(authActions.logout());
-      }, expirationTime)
+    if (tokenData) {
+      dispatch(
+        authHandler({
+          token: tokenData.token,
+          expiresIn: tokenData.duration,
+          type: "AUTO_LOGIN",
+        })
+      );
     }
-    return (() => {
-      // if (timer) {
-      //   timer.clear()
-      // }
-    })
-  }, [dispatch])
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(loadEventsHandler(token));
+  }, [token, dispatch]);
 
   return (
     <Fragment>
-      {showEventModal && <EventModal />}
+      {isLoggedIn && showEventModal && <EventModal />}
       <Route path="/login">
         <Login />
       </Route>

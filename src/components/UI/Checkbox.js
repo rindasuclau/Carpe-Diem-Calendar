@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import classes from "./Checkbox.module.css";
 
 const Checkbox = (props) => {
   const [checked, setChecked] = useState(props.checked);
+  const labelName = props.color === "green" ? "Romania National Days" : props.color;
   const checkboxStyle = checked
     ? { backgroundColor: props.color, borderColor: props.color }
     : {};
@@ -33,7 +34,7 @@ const Checkbox = (props) => {
           stroke={checked ? "#fff" : "none"}
         />
       </svg>
-      <span className={classes.name}>{props.color}</span>
+      <span className={classes.name}>{labelName}</span>
     </label>
   );
 };

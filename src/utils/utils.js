@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 
-export const times = ["12:00am", "12:15am", "12:30am", "12:45am", "1:00am"];
+export const FIREBASE_API_KEY = "AIzaSyCCFW-It40BBdJbcH8GjTHi9NaEnAcPCTw";
+
 export const labelColors = [
   "tomato",
   "skyblue",
@@ -9,7 +10,16 @@ export const labelColors = [
   "plum",
   "orange",
 ];
-export const FIREBASE_API_KEY = "AIzaSyCCFW-It40BBdJbcH8GjTHi9NaEnAcPCTw";
+
+export const LABEL_TYPE = [
+  {color: "tomato", type: "Urgent"},
+  {color: "skyblue", type: "Appointments"},
+  {color: "dodgerblue", type: "Tasks"},
+  {color: "green", type: "Romania National Days"},
+  {color: "plum", type: "Reminders"},
+  {color: "orange", type: "Personal"},
+];
+
 
 const getMonth = (month = dayjs().month()) => {
   const year = dayjs().year();
@@ -38,18 +48,8 @@ export const getTimeGrid = () => {
   return matrix;
 };
 
-export const manageTokenSorage = (token, expiresIn) => {
-  if (token && expiresIn) {
-    const expirationTime = calculateRemainingTime(expiresIn);
-    localStorage.setItem("token", token);
-    localStorage.setItem("expirationTime", expirationTime);
-  } else {
-    localStorage.removeItem("token");
-    localStorage.removeItem("expirationTime");
-  }
-};
 
-const calculateRemainingTime = (expirationTime) => {
+export const calculateRemainingTime = (expirationTime) => {
   const currentTime = new Date().getTime();
   const adjExpirationTime = new Date(expirationTime).getTime();
 
@@ -61,12 +61,6 @@ const calculateRemainingTime = (expirationTime) => {
 export const retrieveStoredToken = () => {
   const storedToken = localStorage.getItem("token");
   const storedExpirationTime = localStorage.getItem("expirationTime");
-
-  if (storedExpirationTime <= 3600) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("expirationTime");
-    return null;
-  }
 
   return {
     token: storedToken,

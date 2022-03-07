@@ -61,7 +61,6 @@ const calendarSlice = createSlice({
     },
 
     addEvent(state, event) {
-      console.log(event.payload);
       state.events.push(event.payload);
     },
     removeEvent(state, eventId) {

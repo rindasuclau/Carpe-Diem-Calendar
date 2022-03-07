@@ -1,5 +1,6 @@
-import { FIREBASE_API_KEY, manageTokenSorage } from "../utils/utils";
+import { calculateRemainingTime, FIREBASE_API_KEY } from "../utils/utils";
 import { authActions } from "./auth-slice";
+import { calendarActions } from "./redux";
 
 export const authenticate = ({ enteredEmail, enteredPassword, isLogin }) => {
   return async (dispatch) => {
@@ -26,13 +27,14 @@ export const authenticate = ({ enteredEmail, enteredPassword, isLogin }) => {
       const data = await response.json();
 
       if (response.ok) {
-        const token = data && data.idToken ? data.idToken : "";
+        const token = data && data.localId ? data.localId : "";
         const expirationTime = new Date(
           new Date().getTime() + +data.expiresIn * 1000
         );
         if (isLogin) {
-          manageTokenSorage(token, expirationTime);
-          dispatch(authActions.login());
+          dispatch(
+            authHandler({ token, expiresIn: expirationTime, type: "LOGIN" })
+          );
         } else {
           alert("Account created!");
         }
@@ -46,5 +48,31 @@ export const authenticate = ({ enteredEmail, enteredPassword, isLogin }) => {
     } catch (error) {
       alert(error.message);
     }
+  };
+};
+
+export const authHandler = ({token, expiresIn, type}) => {
+  return (dispatch) => {
+      let remainingTime;
+      if (type === "LOGIN") {
+        remainingTime = calculateRemainingTime(expiresIn);
+      } else {
+        remainingTime = expiresIn;
+      }
+      if (token) {
+        localStorage.setItem("token", token);
+        dispatch(authActions.setToken(token));
+        dispatch(calendarActions.setShowEventModal(false));
+        dispatch(authActions.login());
+      }
+      if (remainingTime) {
+        localStorage.setItem("expirationTime", remainingTime);
+        setTimeout(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("expirationTime");
+          dispatch(authActions.logout());
+          dispatch(authActions.setToken(null));
+        }, remainingTime);
+      }
   };
 };
