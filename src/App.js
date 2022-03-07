@@ -14,6 +14,7 @@ import { loadEventsHandler } from "./store/calendar-actions";
 function App() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
+  const selectedEvent = useSelector((state) => state.calendar.selectedEvent);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const showEventModal = useSelector((state) => state.calendar.showEventModal);
@@ -37,7 +38,7 @@ function App() {
 
   return (
     <Fragment>
-      {isLoggedIn && showEventModal && <EventModal />}
+      {((isLoggedIn && showEventModal) || (selectedEvent && showEventModal)) && <EventModal />}
       <Route path="/login">
         <Login />
       </Route>

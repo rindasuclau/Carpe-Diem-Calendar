@@ -18,6 +18,7 @@ const Modal = () => {
 
   const token = useSelector((state) => state.auth.token);
 
+  const [editMode, setEditMode] = useState(selectedEvent ? false : true);
   const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
   const [description, setDescription] = useState(
     selectedEvent ? selectedEvent.description : ""
@@ -97,6 +98,12 @@ const Modal = () => {
     }
   };
 
+  const viewModeHandler = () => {
+    setEditMode((prevState) => {
+      return !prevState;
+    });
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
     if (selectedEvent) {
@@ -142,13 +149,24 @@ const Modal = () => {
         <header className={classes.header}>
           <span className="material-icons">drag_handle</span>
           <div className={classes.actions}>
-            <button
-              type="button"
-              className={classes.close}
-              onClick={deleteHandler}
-            >
-              <span className="material-icons">delete_outline</span>
-            </button>
+            {selectedEvent && selectedEvent.color !== "green" && (
+              <button
+                type="button"
+                className={classes.close}
+                onClick={viewModeHandler}
+              >
+                <span className="material-icons">edit</span>
+              </button>
+            )}
+            {selectedEvent && selectedEvent.color !== "green" && (
+              <button
+                type="button"
+                className={classes.close}
+                onClick={deleteHandler}
+              >
+                <span className="material-icons">delete_outline</span>
+              </button>
+            )}
             <button
               type="button"
               className={classes.close}
@@ -160,19 +178,26 @@ const Modal = () => {
         </header>
         <div className={classes.wrapper}>
           <div className={classes.grid}>
-            <input
-              className={classes.title}
-              type="text"
-              name="title"
-              placeholder="Add title"
-              value={title}
-              onChange={titleChangeHandler}
-            />
+            {editMode && (
+              <input
+                className={classes.title}
+                type="text"
+                name="title"
+                placeholder="Add title"
+                value={title}
+                onChange={titleChangeHandler}
+              />
+            )}
+            {!editMode && (
+              <span className={classes.title}>
+                {title !== "" ? title : "(No Title)"}
+              </span>
+            )}
             <span className={`material-icons ${classes["schedule"]}`}>
               schedule
             </span>
             <p className={classes["event-date"]}>{eventDay}</p>
-            {!addTime && (
+            {!addTime && editMode && (
               <button
                 type="button"
                 className={classes["btn-add-time"]}
@@ -183,7 +208,7 @@ const Modal = () => {
                 Add time
               </button>
             )}
-            {addTime && (
+            {addTime && editMode && (
               <button
                 className={classes["btn-close-add-time"]}
                 onClick={() => {
@@ -196,18 +221,32 @@ const Modal = () => {
             <span className={`material-icons ${classes["segment"]}`}>
               segment
             </span>
-            <textarea
-              className={classes.description}
-              type="text"
-              name="description"
-              placeholder="Add description"
-              value={description}
-              onChange={descriptionChangeHandler}
-            />
-            <span className={`material-icons ${classes["bookmark"]}`}>
-              bookmark_border
-            </span>
-            {addTime && (
+            {editMode && (
+              <textarea
+                className={classes.description}
+                type="text"
+                name="description"
+                placeholder="Add description"
+                value={description}
+                onChange={descriptionChangeHandler}
+              />
+            )}
+            {!editMode && (
+              <span className={classes.description}>
+                {description !== "" ? description : "No Description"}
+              </span>
+            )}
+            {!editMode && (
+              <span className={`material-icons ${classes["bookmark"]}`}>
+                event
+              </span>
+            )}
+            {editMode && (
+              <span className={`material-icons ${classes["bookmark"]}`}>
+                bookmark_border
+              </span>
+            )}
+            {addTime && editMode && (
               <div className={classes["dropdown-container"]}>
                 <Dropdown
                   className={classes["time-dropdown"]}
@@ -224,28 +263,44 @@ const Modal = () => {
                 />
               </div>
             )}
-            <div className={classes.labels}>
-              {labelColors.map((lblColor, idx) => {
-                return (
-                  lblColor !== "green" && (
-                    <span
-                      key={idx}
-                      className={`${classes.label} material-icons`}
-                      style={{ backgroundColor: lblColor }}
-                      onClick={() => {
-                        labelHandler(lblColor);
-                      }}
-                    >
-                      {selectedLabel === lblColor && "check"}
-                    </span>
-                  )
-                );
-              })}
-              <span className={classes["label-text"]}>
-                (Select an event type)
+            {!editMode && startTime && endTime && (
+              <p
+                className={classes["dropdown-container"]}
+                style={{ fontSize: "x-small", fontWeight: "bold" }}
+              >{`${startTime} - ${endTime}`}</p>
+            )}
+            {!editMode && selectedEvent && (
+              <span className={classes.labels}>
+                <span
+                  className={`${classes.label} material-icons`}
+                  style={{ backgroundColor: selectedEvent.color }}
+                ></span>
               </span>
-            </div>
-            <button className={classes.save}>Save</button>
+            )}
+            {editMode && (
+              <div className={classes.labels}>
+                {labelColors.map((lblColor, idx) => {
+                  return (
+                    lblColor !== "green" && (
+                      <span
+                        key={idx}
+                        className={`${classes.label} material-icons`}
+                        style={{ backgroundColor: lblColor }}
+                        onClick={() => {
+                          labelHandler(lblColor);
+                        }}
+                      >
+                        {selectedLabel === lblColor && "check"}
+                      </span>
+                    )
+                  );
+                })}
+                <span className={classes["label-text"]}>
+                  (Select an event type)
+                </span>
+              </div>
+            )}
+            {editMode && <button className={classes.save}>Save</button>}
           </div>
         </div>
       </form>
